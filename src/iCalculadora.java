@@ -1,6 +1,6 @@
 public interface iCalculadora {
-    double sumar();
-    double restar();
-    double dividir();
-    double multiplicar();
+    double sumar(double a, double b);
+    double restar(double a, double b);
+    double dividir(double a, double b);
+    double multiplicar(double a, double b);
 }

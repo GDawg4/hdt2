@@ -10,14 +10,21 @@ import java.util.regex.*;
 public class main {
 
     public static boolean isValid(String[] charachters) {
-        if (charachters[0].matches("[1-9]")) {
+        int amountOfInt = 0;
+        int amountOfSymbols = 0;
+        if (charachters[0].matches("[0-9]") && charachters[1].matches("[0-9]")) {
             for (String oneLetter : charachters)
-                if (oneLetter.matches("[1-9]") || oneLetter.matches("[+/*-]")) {
-
-                } else {
+                if (oneLetter.matches("[0-9]")) {
+                    amountOfInt ++;
+                } else if(oneLetter.matches("[+/*-]")) {
+                amountOfSymbols ++;
+                }
+                else {
                     return false;
                 }
-            return true;
+            if (amountOfInt - 1 == amountOfSymbols){
+                return true;
+            }
         }
         return false;
     }
@@ -57,16 +64,18 @@ public class main {
         String[] text = extractText("test.txt");
 
         if (isValid(text)){
-            System.out.println("Yay");
+            myStack.push(text[0]);
+            myStack.push(text[1]);
             for (String oneCharacter: text){
-                myStack.push(oneCharacter);
-            }
-            for (String oneCharacter: text){
-                System.out.println(myStack.pop());
+                if (isNumber(oneCharacter)) {
+                    myStack.push(oneCharacter);
+                }else {
+                    
+                }
             }
         }
         else{
-            System.out.println("Se ingreso un archivo no válido");
+            System.out.println("Se ingresó un archivo no válido");
         }
     }
 }
