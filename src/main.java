@@ -51,12 +51,12 @@ public class main {
         }
         String calculation = contentBuilder.toString();
         String[] onlySymbols = calculation.split(" ");
-        System.out.println(onlySymbols);
         return onlySymbols;
     }
 
     public static void main (String[] args){
         Stack<String> myStack = new myList();
+        iCalculadora myCalculator = new calculadora();
 
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese el nombre del archivo de texto que contiene el mapa");
@@ -64,17 +64,44 @@ public class main {
         String[] text = extractText("test.txt");
 
         if (isValid(text)){
-            myStack.push(text[0]);
-            myStack.push(text[1]);
             for (String oneCharacter: text){
                 if (isNumber(oneCharacter)) {
                     myStack.push(oneCharacter);
                 }else {
-                    
+                    if (myStack.size() > 1 ) {
+                        switch (oneCharacter) {
+                            case "+":
+                                double resultSum = myCalculator.sumar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                myStack.push(String.valueOf(resultSum));
+                                break;
+
+                            case "-":
+                                double resultMinus = myCalculator.restar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                myStack.push(String.valueOf(resultMinus));
+                                break;
+
+                            case "*":
+                                double resultMultiplication = myCalculator.multiplicar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                myStack.push(String.valueOf(resultMultiplication));
+                                break;
+
+                            case "/":
+                                double resultDivision = myCalculator.dividir(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                myStack.push(String.valueOf(resultDivision));
+                                break;
+                        }
+                    }else {
+                        System.out.println("El archivo que subió no se puede procesar completamente");
+                        System.out.println("No hay suficientes números para seguir calculando");
+                        System.out.println("Este es el último resultado");
+                        System.out.println(myStack.pop());
+                    }
+                    }
                 }
+            System.out.println("Resultado final");
+            System.out.println(myStack.pop());
             }
-        }
-        else{
+        else {
             System.out.println("Se ingresó un archivo no válido");
         }
     }
