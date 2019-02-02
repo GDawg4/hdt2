@@ -48,7 +48,7 @@ public class main {
         StringBuilder contentBuilder = new StringBuilder();
         try{
             Stream<String> lines = Files.lines(
-                    Paths.get("test.txt"),
+                    Paths.get(fileName),
                     StandardCharsets.UTF_8);
             lines.forEach(s ->contentBuilder.append(s));
         }catch (IOException exception){
@@ -62,53 +62,69 @@ public class main {
     public static void main (String[] args){
         Stack<String> myStack = new myList();
         iCalculadora myCalculator = new calculadora();
+        boolean wantsToContinue = true;
 
-        Scanner input = new Scanner(System.in);
-        System.out.println("Ingrese el nombre del archivo de texto que contiene el mapa");
-        System.out.println("Por favor incluya .txt al final de su archivo");
-        String mapPath = input.nextLine();
-        String[] text = extractText(mapPath);
+        while (wantsToContinue){
+            System.out.println("Ingrese 1 para elegir un nuevo archivo o 2 para salir");
+            Scanner inputContinue = new Scanner(System.in);
+            String answerContinue = inputContinue.nextLine();
 
-        if (isValid(text)){
-            for (String oneCharacter: text){
-                if (isNumber(oneCharacter)) {
-                    myStack.push(oneCharacter);
-                }else {
-                    if (myStack.size() > 1 ) {
-                        switch (oneCharacter) {
-                            case "+":
-                                double resultSum = myCalculator.sumar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
-                                myStack.push(String.valueOf(resultSum));
-                                break;
+            if (answerContinue.equals("1")){
+                Scanner input = new Scanner(System.in);
+                System.out.println("Ingrese el nombre del archivo de texto que contiene el mapa");
+                System.out.println("Por favor incluya .txt al final de su archivo");
+                String mapPath = input.nextLine();
+                String[] text = extractText(mapPath);
 
-                            case "-":
-                                double resultMinus = myCalculator.restar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
-                                myStack.push(String.valueOf(resultMinus));
-                                break;
+                if (isValid(text)){
+                    for (String oneCharacter: text){
+                        if (isNumber(oneCharacter)) {
+                            myStack.push(oneCharacter);
+                        }else {
+                            if (myStack.size() > 1 ) {
+                                switch (oneCharacter) {
+                                    case "+":
+                                        double resultSum = myCalculator.sumar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                        myStack.push(String.valueOf(resultSum));
+                                        break;
 
-                            case "*":
-                                double resultMultiplication = myCalculator.multiplicar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
-                                myStack.push(String.valueOf(resultMultiplication));
-                                break;
+                                    case "-":
+                                        double resultMinus = myCalculator.restar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                        myStack.push(String.valueOf(resultMinus));
+                                        break;
 
-                            case "/":
-                                double resultDivision = myCalculator.dividir(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
-                                myStack.push(String.valueOf(resultDivision));
-                                break;
+                                    case "*":
+                                        double resultMultiplication = myCalculator.multiplicar(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                        myStack.push(String.valueOf(resultMultiplication));
+                                        break;
+
+                                    case "/":
+                                        double resultDivision = myCalculator.dividir(Double.parseDouble(myStack.pop()), Double.parseDouble(myStack.pop()));
+                                        myStack.push(String.valueOf(resultDivision));
+                                        break;
+                                }
+                            }else {
+                                System.out.println("El archivo que subió no se puede procesar completamente");
+                                System.out.println("No hay suficientes números para seguir calculando");
+                            }
                         }
-                    }else {
-                        System.out.println("El archivo que subió no se puede procesar completamente");
-                        System.out.println("No hay suficientes números para seguir calculando");
-                        System.out.println("Este es el último resultado");
-                        System.out.println(myStack.pop());
                     }
+                    System.out.println("Resultado final");
+                    System.out.println(myStack.pop());
+                    while (!myStack.empty()){
+                        myStack.pop();
                     }
                 }
-            System.out.println("Resultado final");
-            System.out.println(myStack.pop());
+                else {
+                    System.out.println("Se ingresó un archivo no válido");
+                }
+
+            }else if (answerContinue.equals("2")){
+                wantsToContinue = false;
+            }else{
+                System.out.println("Ingreso no válido, favor intentar nuevamente");
             }
-        else {
-            System.out.println("Se ingresó un archivo no válido");
         }
+
     }
 }
