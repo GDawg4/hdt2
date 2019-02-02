@@ -9,6 +9,11 @@ import java.util.regex.*;
 
 public class main {
 
+    /**
+     * Método
+     * @param charachters
+     * @return
+     */
     public static boolean isValid(String[] charachters) {
         int amountOfInt = 0;
         int amountOfSymbols = 0;
@@ -60,8 +65,9 @@ public class main {
 
         Scanner input = new Scanner(System.in);
         System.out.println("Ingrese el nombre del archivo de texto que contiene el mapa");
-        //String mapPath = input.nextLine();
-        String[] text = extractText("test.txt");
+        System.out.println("Por favor incluya .txt al final de su archivo");
+        String mapPath = input.nextLine();
+        String[] text = extractText(mapPath);
 
         if (isValid(text)){
             for (String oneCharacter: text){
